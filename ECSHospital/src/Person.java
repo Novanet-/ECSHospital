@@ -9,7 +9,9 @@ public abstract class Person {
 		this.age = 20;
 		this.health = "healthly";
 	}
-
+	
+	public abstract boolean aDayPasses();
+	
 	public char getGender() {
 		return gender;
 	}
@@ -25,6 +27,4 @@ public abstract class Person {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	
-	public abstract boolean aDayPasses();
 }

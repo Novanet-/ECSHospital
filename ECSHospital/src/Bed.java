@@ -20,4 +20,9 @@ public class Bed {
 		this.occupied = occupied;
 	}
 	
+	public void setBed(Bed bed){
+		this.patient = bed.patient;
+		this.occupied = bed.occupied;
+	}
+	
 }
