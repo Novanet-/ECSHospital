@@ -5,8 +5,8 @@ public abstract class Person {
 	String health;
 	
 	public Person(){
-		this.gender = "F";
-		this.age = "20";
+		this.gender = 'F';
+		this.age = 20;
 		this.health = "healthly";
 	}
 
@@ -26,7 +26,5 @@ public abstract class Person {
 		this.age = age;
 	}
 	
-	public abstract boolean aDayPasses(){
-		
-	}
+	public abstract boolean aDayPasses();
 }
