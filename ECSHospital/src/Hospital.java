@@ -2,11 +2,19 @@ import java.util.ArrayList;
 
 
 public class Hospital {
-	ArrayList<Boolean> beds = new ArrayList<Boolean>();
+	ArrayList<Bed> beds = new ArrayList<Bed>();
+	int MAX_BEDS = 50;
 	
 	public int admitPatient(Patient patient){
-		return 0;
-		
+		Bed tempBed = new Bed();
+		tempBed.setPatient(patient);
+		tempBed.setOccupied(true);
+		if (beds.size() < MAX_BEDS){
+			beds.add(tempBed);
+			return beds.indexOf(tempBed);
+		}
+		else
+			return -1;		
 	}
 	
 	public Patient getPatient(int bedIndex){
@@ -15,6 +23,7 @@ public class Hospital {
 	}
 	
 	public int size(){
+		return 0;
 		
 	}
 	
@@ -23,9 +32,20 @@ public class Hospital {
 	}
 	
 	public boolean isTheatreFree(int theatreIndex){
+		return false;
 		
 	}
 	
-	public
+	public void prepForTheatre(int theatreIndex, Patient patient){
+		
+	}
+	
+	public void takeForRecovery(int theatreIndex){
+		
+	}
+	
+	public void aDayPasses(){
+		
+	}
 	
 }
