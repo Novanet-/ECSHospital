@@ -17,4 +17,9 @@ public class Theatre {
 		this.occupied = occupied;
 	}
 	
+	public void setTheatre(Theatre theatre){
+		this.patient = theatre.patient;
+		this.occupied = theatre.occupied;
+	}
+	
 }

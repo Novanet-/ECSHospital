@@ -7,6 +7,21 @@ public class Hospital {
 	final int MAX_BEDS = 50;
 	final int MAX_THEATRES = 4;
 	
+	public Hospital(){
+		for (int i = 0; i < MAX_BEDS; i++){ //Initialise beds
+			Bed tempBed =  new Bed();
+			tempBed.setPatient(null);
+			tempBed.setOccupied(false);
+			beds.add(tempBed);
+		}
+		for (int i = 0; i < MAX_THEATRES; i++){	//Initialise theatres
+			Theatre tempTheatre = new Theatre();
+			tempTheatre.setPatient(null);
+			tempTheatre.setOccupied(false);
+			theatres.add(tempTheatre);
+		}
+	}
+	
 	public int admitPatient(Patient patient){
 		Bed tempBed = new Bed();
 		boolean bedFound = false;
@@ -61,7 +76,7 @@ public class Hospital {
 		Theatre tempTheatre = new Theatre();
 		tempTheatre.setPatient(patient);
 		tempTheatre.setOccupied(true);
-		theatres.add(theatreIndex, tempTheatre);
+		theatres.get(theatreIndex).setTheatre(tempTheatre);
 	}
 	
 	public void takeForRecovery(int theatreIndex){
@@ -73,24 +88,6 @@ public class Hospital {
 		
 	}
 	
-	public void initBeds(){
-		for (int i = 0; i < MAX_BEDS; i++){
-			Bed tempBed =  new Bed();
-			admitPatient(null);
-			tempBed.setPatient(null);
-			tempBed.setOccupied(false);
-			beds.add(tempBed);
-		}
-	}
-	
-	public void initTheatres(){
-		for (int i = 0; i < MAX_THEATRES; i++){
-			Theatre tempTheatre = new Theatre();
-			tempTheatre.setPatient(null);
-			tempTheatre.setOccupied(false);
-			theatres.add(tempTheatre);
-		}
-	}
 	
 	public static void main(String args[]){
 		TestHarness test = new TestHarness();
