@@ -1,30 +1,45 @@
-
-public abstract class Person {
+public abstract class Person
+{
 	private char gender;
 	private int age;
-	private String health;
-	
-	public Person(){
-		this.gender = 'F';
-		this.age = 20;
-		this.health = "healthly";
+	private Health health;
+
+	public Person(char gender, int age, Health health)
+	{
+		this.gender = gender;
+		this.age = age;
+		this.health = health;
 	}
-	
+
 	public abstract boolean aDayPasses();
-	
-	public char getGender() {
+
+	public void printDetails()
+	{
+		System.out.println(this.gender);
+		System.out.println(this.age);
+		System.out.println(this.health.getHealthState());
+		System.out.println(this.health.getRecoveryTime());
+		System.out.println(this.health.getIllness().getIllnessName());
+	}
+
+	public char getGender()
+	{
 		return gender;
 	}
 
-	public int getAge() {
+	public int getAge()
+	{
 		return age;
 	}
 
-	public String getHealth() {
+	public Health getHealth()
+	{
 		return health;
 	}
 
-	public void setAge(int age) {
+	public void setAge(int age)
+	{
 		this.age = age;
 	}
+
 }
