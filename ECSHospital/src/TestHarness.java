@@ -31,7 +31,7 @@ public class TestHarness {
 		
 		System.out.println("Theatres in hospital = "+hospital.getTheatres().size());
 		System.out.println("Theatres occupied = "+(hospital.getMAX_THEATRES()-(hospital.theatresFree())));
-		System.out.println("First theatre patient = "+hospital.getTheatres().get(0).isOccupied;
+		System.out.println("First theatre patient = "+hospital.getTheatres().get(0).isOccupied());
 		System.out.println("Last theatre patient = "+hospital.getTheatres().get(hospital.getMAX_THEATRES()-1).isOccupied());
 		System.out.println("********");
 	}
