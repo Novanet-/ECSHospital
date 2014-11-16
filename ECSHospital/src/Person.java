@@ -1,8 +1,8 @@
 
 public abstract class Person {
-	char gender;
-	int age;
-	String health;
+	private char gender;
+	private int age;
+	private String health;
 	
 	public Person(){
 		this.gender = 'F';

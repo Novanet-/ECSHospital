@@ -5,7 +5,7 @@ public class Bed {
 	
 	
 	public Patient getPatient() {
-		return patient;
+		return this.patient;
 	}
 	
 	public boolean isOccupied() {
@@ -21,8 +21,8 @@ public class Bed {
 	}
 	
 	public void setBed(Bed bed){
-		this.patient = bed.patient;
-		this.occupied = bed.occupied;
+		this.setPatient(bed.patient);
+		this.setOccupied(bed.occupied);
 	}
 	
 }

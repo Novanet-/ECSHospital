@@ -1,7 +1,7 @@
 
 public class Theatre {
-	Patient patient;
-	boolean occupied;
+	private Patient patient;
+	private boolean occupied;
 	
 	
 	public Patient getPatient() {
@@ -17,4 +17,8 @@ public class Theatre {
 		this.occupied = occupied;
 	}
 	
+	public void setTheatre(Theatre theatre){
+		this.setPatient(theatre.patient);
+		this.setOccupied(theatre.occupied);
+	}
 }

@@ -1,6 +1,6 @@
 
 public class Patient extends Person {
-	String name;
+	private String name;
 	
 
 	public Patient(String name) {
