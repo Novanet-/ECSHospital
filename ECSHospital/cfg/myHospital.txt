@@ -1,0 +1,10 @@
+hospital:100,5
+patient:M,60,1,-1
+patient:M,22,3,-1
+patient:F,31,4,-1
+patient:F,58,8,-1
+patient:M,23,0,6
+doctor:M,55
+doctor:F,45
+limbSurgeon:M,62
+organSurgeon:F,48

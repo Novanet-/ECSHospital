@@ -12,8 +12,20 @@ public class Hospital
 	private ArrayList<Theatre> theatres = new ArrayList<Theatre>();
 	private ArrayList<Illness> illnessArray = new ArrayList<Illness>();
 
-	private final int MAX_BEDS = 50;
-	private final int MAX_THEATRES = 4;
+	private int maxBeds = 50;
+	private int maxTheatres = 4;
+
+	
+	
+	/**
+	 * @param beds
+	 * @param theatres
+	 * @param illnessArray
+	 */
+	public Hospital()
+	{
+		this.initIllnessArray();
+	}
 
 	/**
 	 * Admits a patient to the hospital, by finding an unoccupied bed and
@@ -33,7 +45,7 @@ public class Hospital
 		int index = 0;
 		tempBed.setPatient(patient);
 		tempBed.setOccupied(true);
-		while ((beds.size() < (MAX_BEDS - 1)) || (!bedFound))
+		while ((beds.size() < (maxBeds - 1)) || (!bedFound))
 		{
 			if (!beds.get(index).isOccupied())
 			{
@@ -70,7 +82,7 @@ public class Hospital
 	public int size()
 	{
 		int bedsOccupied = 0;
-		for (int i = 0; i < MAX_BEDS; i++)
+		for (int i = 0; i < maxBeds; i++)
 		{
 			if (beds.get(i).isOccupied() == true)
 				bedsOccupied++;
@@ -87,7 +99,7 @@ public class Hospital
 	public int theatresFree()
 	{
 		int theatresFree = 0;
-		for (int i = 0; i < MAX_THEATRES; i++)
+		for (int i = 0; i < maxTheatres; i++)
 		{
 			if (isTheatreFree(i) == true)
 			{
@@ -171,9 +183,9 @@ public class Hospital
 	 * MAX_BEDS constant (default 50).
 	 * 
 	 */
-	public void initBeds()
+	public void initBeds(int maxBeds)
 	{
-		for (int i = 0; i < MAX_BEDS; i++)
+		for (int i = 0; i < maxBeds; i++)
 		{
 			Bed tempBed = new Bed();
 			tempBed.setPatient(null);
@@ -185,11 +197,12 @@ public class Hospital
 	/**
 	 * Fills the Theatres ArrayList with the number of theatres specified by the
 	 * MAX_THEATRES constant (default 4).
+	 * @param maxTheatres 
 	 * 
 	 */
-	public void initTheatres()
+	public void initTheatres(int maxTheatres)
 	{
-		for (int i = 0; i < MAX_THEATRES; i++)
+		for (int i = 0; i < maxTheatres; i++)
 		{
 			Theatre tempTheatre = new Theatre();
 			tempTheatre.setPatient(null);
@@ -198,7 +211,7 @@ public class Hospital
 		}
 	}
 
-	public void initIllnessArray()
+	private void initIllnessArray()
 	{
 		illnessArray.add(new Illness("Djkstra’s syndrome",1, 5,5, "Any Doctor", false));
 		illnessArray.add(new Illness("Java Flu ",2, 3,3, "Any Doctor", false));
@@ -231,14 +244,14 @@ public class Hospital
 		return illnessArray;
 	}
 
-	public int getMAX_BEDS()
+	public int getMaxBeds()
 	{
-		return MAX_BEDS;
+		return maxBeds;
 	}
 
-	public int getMAX_THEATRES()
+	public int getMaxTheatres()
 	{
-		return MAX_THEATRES;
+		return maxTheatres;
 	}
 
 }

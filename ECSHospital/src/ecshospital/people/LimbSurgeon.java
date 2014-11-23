@@ -6,6 +6,7 @@ public class LimbSurgeon extends Surgeon
 	public LimbSurgeon(char gender, int age, Health health)
 	{
 		super(gender, age, health);
+		setSpecialism(3);
 	}
 
 	

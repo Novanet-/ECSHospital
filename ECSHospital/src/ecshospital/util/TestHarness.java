@@ -3,16 +3,14 @@ package ecshospital.util;
 import ecshospital.attributes.Illness;
 import ecshospital.containers.Hospital;
 import ecshospital.people.Health;
+import ecshospital.people.HospitalAdministrator;
 import ecshospital.people.Patient;
 
 public class TestHarness
 {
 	public void start()
 	{
-		Hospital hospital = new Hospital();
-		hospital.initBeds();
-		hospital.initTheatres();
-		hospital.initIllnessArray();
+		/*Hospital hospital = new Hospital();
 
 		char gender;
 		for (int i = 0; i < 8; i++)
@@ -47,9 +45,10 @@ public class TestHarness
 
 		System.out.println("Theatres in hospital = " + hospital.getTheatres().size());		//Total number of theatres in the hospital
 		System.out.println("Theatres occupied = " + hospital.theatresFree());				//Theatres occupied
-		System.out.println("First theatre patient = " + hospital.getPatient(0).getName());	//The details of the patient in the first occupied theatre
-		System.out.println("Last theatre patient = "
-				+ hospital.getPatient(hospital.getTheatres().size() - 1).getName());		//The details of the patient in the last occupied theatre
+		System.out.println("First theatre patient = ");	//The details of the patient in the first occupied theatre
+		hospital.getPatient(0).printDetails();
+		System.out.println("Last theatre patient = ");		//The details of the patient in the last occupied theatre
+		hospital.getPatient(hospital.getTheatres().size() - 1).printDetails();
 		System.out.println("********");
 
 		for (int i = 0; i < hospital.getMAX_THEATRES(); i++)								//Removes patients from theatres
@@ -64,6 +63,23 @@ public class TestHarness
 		System.out.println("First theatre patient = " + hospital.getTheatres().get(0).isOccupied());//The details of the patient in the first occupied theatre
 		System.out.println("Last theatre patient = "
 				+ hospital.getTheatres().get(hospital.getMAX_THEATRES() - 1).isOccupied());			//The details of the patient in the last occupied theatre
-		System.out.println("********");
+		System.out.println("********");#
+		*/
+		
+		HospitalAdministrator admin = new HospitalAdministrator();
+		admin.aDayPasses();
+		for (int i = 0; i < admin.getHospital().size(); i++)
+		{
+			admin.getHospital().getBeds().get(i).getPatient().printGenderAge();
+			System.out.println("*");
+		}
+		for (int i = 0; i < admin.getDoctors().size(); i++)
+		{
+			admin.getDoctors().get(i).printDetails();
+			System.out.println("**");
+		}
+		System.out.println(admin.getHospital().getMaxBeds());
+		System.out.println(admin.getHospital().getMaxTheatres());
+		System.out.println("***");
 	}
-}
+} 

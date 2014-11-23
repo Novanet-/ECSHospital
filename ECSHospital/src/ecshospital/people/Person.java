@@ -24,6 +24,12 @@ public abstract class Person
 		System.out.println(this.health.getRecoveryTime());
 		System.out.println(this.health.getIllness().getIllnessName());
 	}
+	
+	public void printGenderAge()
+	{
+		System.out.println(this.gender);
+		System.out.println(this.age);
+	}
 
 	public char getGender()
 	{
