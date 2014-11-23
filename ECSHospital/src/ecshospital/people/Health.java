@@ -1,10 +1,11 @@
 package ecshospital.people;
 
 import ecshospital.attributes.Illness;
+import ecshospital.util.RandomNumber;
 
 public class Health
 {
-	int healthState;
+	int healthState;	//0 = healthy, 1 = sick, 2 = recovering
 	int recoveryTime;
 	Illness illness;
 	
@@ -14,6 +15,13 @@ public class Health
 		this.healthState = healthState;
 		this.recoveryTime = recoveryTime;
 		this.illness = illness;
+	}
+	
+	public int generateRecoveryTime()
+	{
+		RandomNumber randomNo = new RandomNumber();
+		int rand = randomNo.generate(illness.getMaxRecoveryTime() - illness.getMinRecoveryTime());  //Uses a random number generator, to find a value for recovery time
+		return illness.getMinRecoveryTime() + rand;													//Between the min and max recovery time for the illness
 	}
 	
 	public int getHealthState()

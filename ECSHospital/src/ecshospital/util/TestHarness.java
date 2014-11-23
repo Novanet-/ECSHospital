@@ -26,13 +26,7 @@ public class TestHarness
 			}
 
 			Illness tempIllness = hospital.getIllnessArray().get(i);
-			int tempRecoverTime;
-
-			RandomNumber randomNo = new RandomNumber();
-			int rand = randomNo.generate(tempIllness.getMaxRecoveryTime() - tempIllness.getMinRecoveryTime());  //Uses a random number generator,
-																									  //to find a value for recovery time
-			tempRecoverTime = tempIllness.getMinRecoveryTime() + rand;					//Between the min and max recovery time for the illness
-			Health tempHealth = new Health(0, tempRecoverTime, tempIllness);
+			Health tempHealth = new Health(0, 0, tempIllness);
 			hospital.admitPatient(new Patient(gender, (20 + i), tempHealth, i + " Smith"));
 		}
 		System.out.println("Beds in hospital = " + hospital.getBeds().size());		//Total number of beds in the hospital
