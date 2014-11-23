@@ -1,4 +1,6 @@
-package ecshospital;
+package ecshospital.people;
+
+
 public abstract class Person
 {
 	private char gender;

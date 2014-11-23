@@ -1,4 +1,10 @@
-package ecshospital;
+package ecshospital.util;
+
+import ecshospital.attributes.Illness;
+import ecshospital.containers.Hospital;
+import ecshospital.people.Health;
+import ecshospital.people.Patient;
+
 public class TestHarness
 {
 	public void start()
@@ -23,9 +29,9 @@ public class TestHarness
 			int tempRecoverTime;
 
 			RandomNumber randomNo = new RandomNumber();
-			int rand = randomNo.generate(tempIllness.maxRecoveryTime - tempIllness.minRecoveryTime);  //Uses a random number generator,
+			int rand = randomNo.generate(tempIllness.getMaxRecoveryTime() - tempIllness.getMinRecoveryTime());  //Uses a random number generator,
 																									  //to find a value for recovery time
-			tempRecoverTime = tempIllness.minRecoveryTime + rand;					//Between the min and max recovery time for the illness
+			tempRecoverTime = tempIllness.getMinRecoveryTime() + rand;					//Between the min and max recovery time for the illness
 			Health tempHealth = new Health(0, tempRecoverTime, tempIllness);
 			hospital.admitPatient(new Patient(gender, (20 + i), tempHealth, i + " Smith"));
 		}

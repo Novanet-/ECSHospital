@@ -1,4 +1,6 @@
-package ecshospital;
+package ecshospital.people;
+
+
 public class Patient extends Person
 {
 	private String name;

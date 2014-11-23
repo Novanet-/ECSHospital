@@ -1,4 +1,4 @@
-package ecshospital;
+package ecshospital.util;
 import java.util.Random;
 
 public class RandomNumber

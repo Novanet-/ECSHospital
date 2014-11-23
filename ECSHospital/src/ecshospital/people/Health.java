@@ -1,4 +1,7 @@
-package ecshospital;
+package ecshospital.people;
+
+import ecshospital.attributes.Illness;
+
 public class Health
 {
 	int healthState;

@@ -1,4 +1,4 @@
-package ecshospital;
+package ecshospital.attributes;
 
 
 public class Illness

@@ -1,4 +1,7 @@
-package ecshospital;
+package ecshospital.containers;
+
+import ecshospital.people.Patient;
+
 public class Bed
 {
 	private Patient patient;
