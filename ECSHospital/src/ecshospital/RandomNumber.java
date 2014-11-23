@@ -1,3 +1,4 @@
+package ecshospital;
 import java.util.Random;
 
 public class RandomNumber
@@ -5,9 +6,9 @@ public class RandomNumber
 
 	Random randomNum = new Random();
 
-	public int generate()
+	public int generate(int range)
 	{
-		int result = randomNum.nextInt(2);
+		int result = randomNum.nextInt(range + 1);
 		return result;
 	}
 

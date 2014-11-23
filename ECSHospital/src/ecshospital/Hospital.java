@@ -1,3 +1,4 @@
+package ecshospital;
 import java.util.ArrayList;
 
 public class Hospital

@@ -1,3 +1,4 @@
+package ecshospital;
 public class Bed
 {
 	private Patient patient;

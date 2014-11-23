@@ -1,3 +1,4 @@
+package ecshospital;
 public class Theatre
 {
 	private Patient patient;
