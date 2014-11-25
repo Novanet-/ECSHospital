@@ -1,10 +1,6 @@
 package ecshospital.util;
 
-import ecshospital.attributes.Illness;
-import ecshospital.containers.Hospital;
-import ecshospital.people.Health;
 import ecshospital.people.HospitalAdministrator;
-import ecshospital.people.Patient;
 
 public class TestHarness
 {

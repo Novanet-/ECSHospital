@@ -4,19 +4,20 @@ public class Doctor extends Person
 {
 	private int specialism;
 	private Patient assignedPatient;
-	
+
 	public Doctor(char gender, int age, Health health)
 	{
 		super(gender, age, health);
 		setSpecialism(1);
+		assignedPatient = null;
 	}
-	
+
 	public void printDetails()
 	{
 		super.printGenderAge();
 		System.out.println(this.getSpecialism());
 	}
-	
+
 	public boolean treatPatient()
 	{
 		int illnessID = assignedPatient.getHealth().getIllness().getIdNumber();
@@ -29,25 +30,25 @@ public class Doctor extends Person
 		else
 			return false;
 	}
-	
+
 	public boolean aDayPasses()
 	{
-		return false;
+		return treatPatient();
 	}
-	
+
 	public int getSpecialism()
 	{
 		return specialism;
 	}
-	
-	
+
 	public Patient getAssignedPatient()
 	{
 		return assignedPatient;
 	}
-	
+
 	/**
-	 * @param specialism the specialism to set
+	 * @param specialism
+	 *            the specialism to set
 	 */
 	public void setSpecialism(int specialism)
 	{
