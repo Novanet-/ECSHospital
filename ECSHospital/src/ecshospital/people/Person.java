@@ -1,5 +1,7 @@
 package ecshospital.people;
 
+import ecshospital.people.Health;
+
 
 public abstract class Person
 {

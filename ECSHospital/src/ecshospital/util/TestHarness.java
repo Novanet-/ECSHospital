@@ -63,6 +63,7 @@ public class TestHarness
 		*/
 		
 		HospitalAdministrator admin = new HospitalAdministrator();
+		admin.initSimulation();
 		admin.aDayPasses();
 		for (int i = 0; i < admin.getHospital().size(); i++)
 		{

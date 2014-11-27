@@ -13,7 +13,7 @@ public class Parser
 	    ArrayList<String> fileArray = new ArrayList<String>();
 		try
 		{
-			scanner = new Scanner(new FileInputStream("H:/Computer Science/COMP1202 (Programming I)/Git/ECSHospital/ECSHospital/cfg/myHospital.txt"));
+			scanner = new Scanner(new FileInputStream(System.getProperty("user.dir")+"/cfg/myHospital.txt"));
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();

@@ -7,6 +7,11 @@ import ecshospital.attributes.Illness;
 import ecshospital.containers.Bed;
 import ecshospital.containers.Hospital;
 import ecshospital.containers.Theatre;
+import ecshospital.people.Doctor;
+import ecshospital.people.Health;
+import ecshospital.people.LimbSurgeon;
+import ecshospital.people.OrganSurgeon;
+import ecshospital.people.Patient;
 import ecshospital.util.Parser;
 
 public class HospitalAdministrator
@@ -28,9 +33,14 @@ public class HospitalAdministrator
 				int healthState = 0;
 				if (line.get(3).equals("0"))
 				{
-					healthState = 0;
-				}
-				else
+					if (Integer.parseInt(line.get(4)) > -1)
+					{
+						healthState = 2;
+					} else
+					{
+						healthState = 0;
+					}
+				} else
 				{
 					tempIllness = hospital.getIllnessArray().get((Integer.parseInt(line.get(3))) - 1);
 					healthState = 1;
@@ -38,29 +48,25 @@ public class HospitalAdministrator
 				Health tempHealth = new Health(healthState, -1, tempIllness);
 				Patient tempPatient = new Patient(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
 				waitingPatients.add(tempPatient);
-			}
-			else if (line.get(0).equals("doctor"))
+			} else if (line.get(0).equals("doctor"))
 			{
 				Health tempHealth = new Health(0, -1, null);
 				Doctor tempDoctor = new Doctor(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
-			}
-			else if (line.get(0).equals("limbSurgeon"))
+			} else if (line.get(0).equals("limbSurgeon"))
 			{
 				Health tempHealth = new Health(0, -1, null);
 				Doctor tempDoctor = new LimbSurgeon(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
-			}
-			else if (line.get(0).equals("organSurgeon"))
+			} else if (line.get(0).equals("organSurgeon"))
 			{
 				Health tempHealth = new Health(0, -1, null);
 				Doctor tempDoctor = new OrganSurgeon(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
-			}
-			else if (line.get(0).equals("hospital"))
+			} else if (line.get(0).equals("hospital"))
 			{
-				hospital.initBeds(Integer.parseInt(line.get(1)));
-				hospital.initTheatres(Integer.parseInt(line.get(2)));
+				hospital.initBeds(Integer.parseInt(line.get(1)) - 1);
+				hospital.initTheatres(Integer.parseInt(line.get(2)) - 1);
 			}
 		}
 		return false;
@@ -73,27 +79,35 @@ public class HospitalAdministrator
 		{
 			int tempSpec = d.getSpecialism();
 			boolean patientFound = false;
+			int i = 0;
 
 			if (d.getSpecialism() == 4)
 			{
-				for (int i = 0; i < hospital.size(); i++)
+				while ((i < hospital.size()) && (!patientFound))
 				{
 					Patient tempPatient = hospital.getBeds().get(i).getPatient();
-					int illnessID = tempPatient.getHealth().getIllness().getIdNumber();
-					if ((illnessID == 5 || illnessID == 6) && (!assignedPatients.contains(tempPatient)))
+					if (tempPatient.getHealth().getHealthState() == 1)
 					{
-						patientFound = true;
-						boolean theatreFound = false;
-						i = 0;
-						while ((!theatreFound) && (i < hospital.getMaxTheatres()))
+						int illnessID = tempPatient.getHealth().getIllness().getIdNumber();
+						if ((illnessID == 5 || illnessID == 6) && (!assignedPatients.contains(tempPatient)))
 						{
-							if (hospital.isTheatreFree(i))
+							patientFound = true;
+							boolean theatreFound = false;
+							i = 0;
+							while ((!theatreFound) && (i < hospital.getMaxTheatres()))
 							{
-								theatreFound = true;
-								hospital.prepForTheatre(i, tempPatient);
+								if (hospital.isTheatreFree(i))
+								{
+									theatreFound = true;
+									d.assignPatient(tempPatient);
+									assignedPatients.add(tempPatient);
+									hospital.prepForTheatre(i, tempPatient);
+									i++;
+								}
 							}
 						}
 					}
+					i++;
 				}
 				if (!patientFound)
 					d.setSpecialism(2);
@@ -101,24 +115,31 @@ public class HospitalAdministrator
 
 			if (d.getSpecialism() == 3)
 			{
-				for (int i = 0; i < hospital.size(); i++)
+				while ((i < hospital.size()) && (!patientFound))
 				{
 					Patient tempPatient = hospital.getBeds().get(i).getPatient();
-					int illnessID = tempPatient.getHealth().getIllness().getIdNumber();
-					if ((illnessID == 7 || illnessID == 8) && (!assignedPatients.contains(tempPatient)))
+					if (tempPatient.getHealth().getHealthState() == 1)
 					{
-						patientFound = true;
-						boolean theatreFound = false;
-						i = 0;
-						while ((!theatreFound) && (i < hospital.getMaxTheatres()))
+						int illnessID = tempPatient.getHealth().getIllness().getIdNumber();
+						if ((illnessID == 7 || illnessID == 8) && (!assignedPatients.contains(tempPatient)))
 						{
-							if (hospital.isTheatreFree(i))
+							patientFound = true;
+							boolean theatreFound = false;
+							i = 0;
+							while ((!theatreFound) && (i < hospital.getMaxTheatres()))
 							{
-								theatreFound = true;
-								hospital.prepForTheatre(i, tempPatient);
+								if (hospital.isTheatreFree(i))
+								{
+									theatreFound = true;
+									d.assignPatient(tempPatient);
+									assignedPatients.add(tempPatient);
+									hospital.prepForTheatre(i, tempPatient);
+									i++;
+								}
 							}
 						}
 					}
+					i++;
 				}
 				if (!patientFound)
 					d.setSpecialism(2);
@@ -126,24 +147,31 @@ public class HospitalAdministrator
 
 			if (d.getSpecialism() == 2)
 			{
-				for (int i = 0; i < hospital.size(); i++)
+				while ((i < hospital.size()) && (!patientFound))
 				{
 					Patient tempPatient = hospital.getBeds().get(i).getPatient();
-					int illnessID = tempPatient.getHealth().getIllness().getIdNumber();
-					if ((illnessID == 4) && (!assignedPatients.contains(tempPatient)))
+					if (tempPatient.getHealth().getHealthState() == 1)
 					{
-						patientFound = true;
-						boolean theatreFound = false;
-						i = 0;
-						while ((!theatreFound) && (i < hospital.getMaxTheatres()))
+						int illnessID = tempPatient.getHealth().getIllness().getIdNumber();
+						if ((illnessID == 4) && (!assignedPatients.contains(tempPatient)))
 						{
-							if (hospital.isTheatreFree(i))
+							patientFound = true;
+							boolean theatreFound = false;
+							i = 0;
+							while ((!theatreFound) && (i < hospital.getMaxTheatres()))
 							{
-								theatreFound = true;
-								hospital.prepForTheatre(i, tempPatient);
+								if (hospital.isTheatreFree(i))
+								{
+									theatreFound = true;
+									d.assignPatient(tempPatient);
+									assignedPatients.add(tempPatient);
+									hospital.prepForTheatre(i, tempPatient);
+									i++;
+								}
 							}
 						}
 					}
+					i++;
 				}
 				if (!patientFound)
 					d.setSpecialism(1);
@@ -151,24 +179,20 @@ public class HospitalAdministrator
 
 			if (d.getSpecialism() == 1)
 			{
-				for (int i = 0; i < hospital.size(); i++)
+				while ((i < hospital.size()) && (!patientFound))
 				{
 					Patient tempPatient = hospital.getBeds().get(i).getPatient();
-					int illnessID = tempPatient.getHealth().getIllness().getIdNumber();
-					if ((illnessID < 4) && (!assignedPatients.contains(tempPatient)))
+					if (tempPatient.getHealth().getHealthState() == 1)
 					{
-						patientFound = true;
-						boolean theatreFound = false;
-						i = 0;
-						while ((!theatreFound) && (i < hospital.getMaxTheatres()))
+						int illnessID = tempPatient.getHealth().getIllness().getIdNumber();
+						if ((illnessID < 4) && (!assignedPatients.contains(tempPatient)))
 						{
-							if (hospital.isTheatreFree(i))
-							{
-								theatreFound = true;
-								hospital.prepForTheatre(i, tempPatient);
-							}
+							patientFound = true;
+							d.assignPatient(tempPatient);
+							assignedPatients.add(tempPatient);
 						}
 					}
+					i++;
 				}
 			}
 

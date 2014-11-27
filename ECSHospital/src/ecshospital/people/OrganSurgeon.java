@@ -1,5 +1,8 @@
 package ecshospital.people;
 
+import ecshospital.people.Patient;
+import ecshospital.people.Surgeon;
+
 public class OrganSurgeon extends Surgeon
 {
 

@@ -2,6 +2,8 @@ package ecshospital.containers;
 import java.util.ArrayList;
 
 import ecshospital.attributes.Illness;
+import ecshospital.containers.Bed;
+import ecshospital.containers.Theatre;
 import ecshospital.people.Patient;
 import ecshospital.util.TestHarness;
 

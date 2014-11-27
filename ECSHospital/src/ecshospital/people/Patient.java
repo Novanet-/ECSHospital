@@ -15,7 +15,7 @@ public class Patient extends Person
 
 	public boolean aDayPasses()
 	{
-		this.getHealth().setRecoveryTime(this.getHealth().getRecoveryTime - 1);
+		this.getHealth().setRecoveryTime(this.getHealth().getRecoveryTime() - 1);
 		if (this.getHealth().getRecoveryTime() == 0)
 		{
 			this.getHealth().setHealthState(0);
