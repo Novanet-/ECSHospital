@@ -14,57 +14,50 @@ import ecshospital.people.OrganSurgeon;
 import ecshospital.people.Patient;
 import ecshospital.util.Parser;
 
-public class HospitalAdministrator
-{
+public class HospitalAdministrator {
 	Hospital hospital = new Hospital();
 	ArrayList<Doctor> doctors = new ArrayList<Doctor>();
 	ArrayList<Patient> waitingPatients = new ArrayList<Patient>();
 	Parser parser = new Parser();
 
-	public boolean initSimulation()
-	{
+	public boolean initSimulation() {
 		ArrayList<String> fileArray = parser.readConfigFile();
-		for (int i = 0; i < fileArray.size(); i++)
-		{
+		for (int i = 0; i < fileArray.size(); i++) {
 			ArrayList<String> line = parser.parseConfigFile(fileArray.get(i));
-			if (line.get(0).equals("patient"))
-			{
+			if (line.get(0).equals("patient")) {
 				Illness tempIllness = null;
 				int healthState = 0;
-				if (line.get(3).equals("0"))
-				{
-					if (Integer.parseInt(line.get(4)) > -1)
-					{
+				if (line.get(3).equals("0")) {
+					if (Integer.parseInt(line.get(4)) > -1) {
 						healthState = 2;
-					} else
-					{
+					} else {
 						healthState = 0;
 					}
-				} else
-				{
-					tempIllness = hospital.getIllnessArray().get((Integer.parseInt(line.get(3))) - 1);
+				} else {
+					tempIllness = hospital.getIllnessArray().get(
+							(Integer.parseInt(line.get(3))) - 1);
 					healthState = 1;
 				}
 				Health tempHealth = new Health(healthState, -1, tempIllness);
-				Patient tempPatient = new Patient(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
+				Patient tempPatient = new Patient(line.get(1).charAt(0),
+						Integer.parseInt(line.get(2)), tempHealth);
 				waitingPatients.add(tempPatient);
-			} else if (line.get(0).equals("doctor"))
-			{
+			} else if (line.get(0).equals("doctor")) {
 				Health tempHealth = new Health(0, -1, null);
-				Doctor tempDoctor = new Doctor(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
+				Doctor tempDoctor = new Doctor(line.get(1).charAt(0),
+						Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
-			} else if (line.get(0).equals("limbSurgeon"))
-			{
+			} else if (line.get(0).equals("limbSurgeon")) {
 				Health tempHealth = new Health(0, -1, null);
-				Doctor tempDoctor = new LimbSurgeon(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
+				Doctor tempDoctor = new LimbSurgeon(line.get(1).charAt(0),
+						Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
-			} else if (line.get(0).equals("organSurgeon"))
-			{
+			} else if (line.get(0).equals("organSurgeon")) {
 				Health tempHealth = new Health(0, -1, null);
-				Doctor tempDoctor = new OrganSurgeon(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
+				Doctor tempDoctor = new OrganSurgeon(line.get(1).charAt(0),
+						Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
-			} else if (line.get(0).equals("hospital"))
-			{
+			} else if (line.get(0).equals("hospital")) {
 				hospital.initBeds(Integer.parseInt(line.get(1)) - 1);
 				hospital.initTheatres(Integer.parseInt(line.get(2)) - 1);
 			}
@@ -109,10 +102,12 @@ public class HospitalAdministrator
 					}
 					i++;
 				}
-				if (!patientFound)
+				if ((!patientFound) && (!(i < hospital.size())))
 					d.setSpecialism(2);
 			}
-
+			
+			i = 0;
+			
 			if (d.getSpecialism() == 3)
 			{
 				while ((i < hospital.size()) && (!patientFound))
@@ -141,10 +136,12 @@ public class HospitalAdministrator
 					}
 					i++;
 				}
-				if (!patientFound)
+				if ((!patientFound) && (!(i < hospital.size())))
 					d.setSpecialism(2);
 			}
 
+			i = 0;
+			
 			if (d.getSpecialism() == 2)
 			{
 				while ((i < hospital.size()) && (!patientFound))
@@ -173,9 +170,11 @@ public class HospitalAdministrator
 					}
 					i++;
 				}
-				if (!patientFound)
+				if ((!patientFound) && (!(i < hospital.size())))
 					d.setSpecialism(1);
 			}
+			
+			i = 0;
 
 			if (d.getSpecialism() == 1)
 			{
@@ -200,34 +199,26 @@ public class HospitalAdministrator
 		}
 	}
 
-	public boolean aDayPasses()
-	{
-		for (Patient p : waitingPatients)
-		{
+	public boolean aDayPasses() {
+		for (Patient p : waitingPatients) {
 			hospital.admitPatient(p);
 		}
 		this.assignDoctors();
-		for (Doctor d : doctors)
-		{
+		for (Doctor d : doctors) {
 			d.aDayPasses();
 		}
 		int i = 0;
-		for (Theatre t : hospital.getTheatres())
-		{
-			if (t.isOccupied())
-			{
+		for (Theatre t : hospital.getTheatres()) {
+			if (t.isOccupied()) {
 				hospital.takeForRecovery(i);
 				i++;
 			}
 		}
 		i = 0;
-		for (Bed b : hospital.getBeds())
-		{
-			if (b.isOccupied())
-			{
+		for (Bed b : hospital.getBeds()) {
+			if (b.isOccupied()) {
 				b.getPatient().aDayPasses();
-				if (b.getPatient().getHealth().getHealthState() == 0)
-				{
+				if (b.getPatient().getHealth().getHealthState() == 0) {
 					hospital.dischargePatient(i);
 				}
 			}
@@ -239,24 +230,21 @@ public class HospitalAdministrator
 	/**
 	 * @return the hospital
 	 */
-	public Hospital getHospital()
-	{
+	public Hospital getHospital() {
 		return hospital;
 	}
 
 	/**
 	 * @return the doctors
 	 */
-	public ArrayList<Doctor> getDoctors()
-	{
+	public ArrayList<Doctor> getDoctors() {
 		return doctors;
 	}
 
 	/**
 	 * @return the parser
 	 */
-	public Parser getParser()
-	{
+	public Parser getParser() {
 		return parser;
 	}
 
@@ -264,8 +252,7 @@ public class HospitalAdministrator
 	 * @param hospital
 	 *            the hospital to set
 	 */
-	public void setHospital(Hospital hospital)
-	{
+	public void setHospital(Hospital hospital) {
 		this.hospital = hospital;
 	}
 
@@ -273,8 +260,7 @@ public class HospitalAdministrator
 	 * @param doctors
 	 *            the doctors to set
 	 */
-	public void setDoctors(ArrayList<Doctor> doctors)
-	{
+	public void setDoctors(ArrayList<Doctor> doctors) {
 		this.doctors = doctors;
 	}
 
@@ -282,8 +268,7 @@ public class HospitalAdministrator
 	 * @param parser
 	 *            the parser to set
 	 */
-	public void setParser(Parser parser)
-	{
+	public void setParser(Parser parser) {
 		this.parser = parser;
 	}
 
