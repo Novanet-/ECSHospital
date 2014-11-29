@@ -225,12 +225,6 @@ public class Hospital
 		illnessArray.add(new Illness("Coder’s Elbow ",8, 2,3, "Limb Surgeon", true));
 	}
 
-	public static void main(String args[])
-	{
-		TestHarness test = new TestHarness();
-		test.start();
-	}
-
 	public ArrayList<Bed> getBeds()
 	{
 		return beds;

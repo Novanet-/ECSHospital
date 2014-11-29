@@ -19,7 +19,7 @@ public class Doctor extends Person
 	public void printDetails()
 	{
 		super.printGenderAge();
-		System.out.println(this.getSpecialism());
+		System.out.print(this.getSpecialism());
 	}
 
 	public boolean treatPatient()

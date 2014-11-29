@@ -29,8 +29,15 @@ public abstract class Person
 	
 	public void printGenderAge()
 	{
-		System.out.println(this.gender);
-		System.out.println(this.age);
+		System.out.print(this.gender + " , ");
+		System.out.print(this.age + " , ");
+	}
+	
+	public void printHealth()
+	{
+		System.out.print(this.getHealth().getHealthState() + " , ");
+		System.out.print(this.getHealth().getIllness().getIdNumber() + " , ");
+		System.out.print(this.getHealth().getRecoveryTime());
 	}
 
 	public char getGender()
