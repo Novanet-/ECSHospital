@@ -58,8 +58,10 @@ public class HospitalAdministrator {
 						Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
 			} else if (line.get(0).equals("hospital")) {
-				hospital.initBeds(Integer.parseInt(line.get(1)) - 1);
-				hospital.initTheatres(Integer.parseInt(line.get(2)) - 1);
+				hospital.setMaxBeds(Integer.parseInt(line.get(1)) - 1);
+				hospital.setMaxTheatres(Integer.parseInt(line.get(2)) - 1);
+				hospital.initBeds(hospital.getMaxBeds());
+				hospital.initTheatres(hospital.getMaxTheatres());
 			}
 		}
 		return false;
@@ -95,8 +97,8 @@ public class HospitalAdministrator {
 									d.assignPatient(tempPatient);
 									assignedPatients.add(tempPatient);
 									hospital.prepForTheatre(i, tempPatient);
-									i++;
 								}
+								i++;
 							}
 						}
 					}
@@ -129,8 +131,8 @@ public class HospitalAdministrator {
 									d.assignPatient(tempPatient);
 									assignedPatients.add(tempPatient);
 									hospital.prepForTheatre(i, tempPatient);
-									i++;
 								}
+								i++;
 							}
 						}
 					}
@@ -163,8 +165,8 @@ public class HospitalAdministrator {
 									d.assignPatient(tempPatient);
 									assignedPatients.add(tempPatient);
 									hospital.prepForTheatre(i, tempPatient);
-									i++;
 								}
+								i++;
 							}
 						}
 					}

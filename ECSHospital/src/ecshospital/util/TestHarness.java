@@ -67,8 +67,11 @@ public class TestHarness
 		admin.aDayPasses();
 		for (int i = 0; i < admin.getHospital().size(); i++)
 		{
-			admin.getHospital().getBeds().get(i).getPatient().printGenderAge();
-			System.out.println("*");
+			if (admin.getHospital().getBeds().get(i).getPatient() != null)
+			{
+				admin.getHospital().getBeds().get(i).getPatient().printGenderAge();
+				System.out.println("*");
+			}
 		}
 		for (int i = 0; i < admin.getDoctors().size(); i++)
 		{

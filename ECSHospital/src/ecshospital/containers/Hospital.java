@@ -256,4 +256,16 @@ public class Hospital
 		return maxTheatres;
 	}
 
+	public void setMaxBeds(int maxBeds)
+	{
+		this.maxBeds = maxBeds;
+	}
+
+	public void setMaxTheatres(int maxTheatres)
+	{
+		this.maxTheatres = maxTheatres;
+	}
+	
+	
+
 }
