@@ -1,12 +1,9 @@
 package ecshospital.containers;
+
 import java.util.ArrayList;
 
 import ecshospital.attributes.Illness;
-import ecshospital.containers.Bed;
-import ecshospital.containers.Theatre;
 import ecshospital.people.Patient;
-import ecshospital.util.TestHarness;
-
 
 public class Hospital
 {
@@ -17,8 +14,6 @@ public class Hospital
 	private int maxBeds = 50;
 	private int maxTheatres = 4;
 
-	
-	
 	/**
 	 * @param beds
 	 * @param theatres
@@ -124,7 +119,8 @@ public class Hospital
 		Bed tempBed = new Bed();
 		tempBed.setOccupied(false);
 		tempBed.setPatient(null);
-		beds.get(bedIndex).setBed(tempBed);
+		beds.remove(bedIndex);
+		beds.add(tempBed);
 	}
 
 	/**
@@ -199,7 +195,8 @@ public class Hospital
 	/**
 	 * Fills the Theatres ArrayList with the number of theatres specified by the
 	 * MAX_THEATRES constant (default 4).
-	 * @param maxTheatres 
+	 * 
+	 * @param maxTheatres
 	 * 
 	 */
 	public void initTheatres(int maxTheatres)
@@ -215,14 +212,14 @@ public class Hospital
 
 	private void initIllnessArray()
 	{
-		illnessArray.add(new Illness("Djkstra’s syndrome",1, 5,5, "Any Doctor", false));
-		illnessArray.add(new Illness("Java Flu ",2, 3,3, "Any Doctor", false));
-		illnessArray.add(new Illness("Deadline Panic Attacks",3,1,1, "Any Doctor", false));
-		illnessArray.add(new Illness("Polymorphic Cist ",4, 2,4, "Any Doctor", true));
-		illnessArray.add(new Illness("Semicolon Missing ",5, 5,8, "Organ Surgeon", true));
-		illnessArray.add(new Illness("Trapped Exception ",6, 6,8, "Organ Surgeon", true));
-		illnessArray.add(new Illness("Tim Berners Knee ",7, 4,6, "Limb Surgeon", true));
-		illnessArray.add(new Illness("Coder’s Elbow ",8, 2,3, "Limb Surgeon", true));
+		illnessArray.add(new Illness("Djkstra’s syndrome", 1, 5, 5, "Any Doctor", false));
+		illnessArray.add(new Illness("Java Flu ", 2, 3, 3, "Any Doctor", false));
+		illnessArray.add(new Illness("Deadline Panic Attacks", 3, 1, 1, "Any Doctor", false));
+		illnessArray.add(new Illness("Polymorphic Cist ", 4, 2, 4, "Any Doctor", true));
+		illnessArray.add(new Illness("Semicolon Missing ", 5, 5, 8, "Organ Surgeon", true));
+		illnessArray.add(new Illness("Trapped Exception ", 6, 6, 8, "Organ Surgeon", true));
+		illnessArray.add(new Illness("Tim Berners Knee ", 7, 4, 6, "Limb Surgeon", true));
+		illnessArray.add(new Illness("Coder’s Elbow ", 8, 2, 3, "Limb Surgeon", true));
 	}
 
 	public ArrayList<Bed> getBeds()
@@ -259,7 +256,5 @@ public class Hospital
 	{
 		this.maxTheatres = maxTheatres;
 	}
-	
-	
 
 }

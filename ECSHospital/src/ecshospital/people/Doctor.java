@@ -1,13 +1,9 @@
 package ecshospital.people;
 
-import ecshospital.people.Health;
-import ecshospital.people.Patient;
-import ecshospital.people.Person;
-
 public class Doctor extends Person
 {
 	private int specialism;
-	private Patient assignedPatient;
+	protected Patient assignedPatient;
 
 	public Doctor(char gender, int age, Health health)
 	{
@@ -24,11 +20,14 @@ public class Doctor extends Person
 
 	public boolean treatPatient()
 	{
-		int illnessID = assignedPatient.getHealth().getIllness().getIdNumber();
+		int illnessID = -1;
+		if (assignedPatient != null)
+			illnessID = assignedPatient.getHealth().getIllness().getIdNumber();
 		if (illnessID == 1 || illnessID == 2 || illnessID == 3)  //If illness id is in range 1-3
 		{
 			assignedPatient.getHealth().setHealthState(2); //Sets patient's health state to recovering
 			assignedPatient.getHealth().setRecoveryTime(assignedPatient.getHealth().generateRecoveryTime());	//Assigns a recovery time based on the min and max recovery time of their illness
+			this.assignedPatient = null;
 			return true;
 		}
 		else

@@ -1,8 +1,5 @@
 package ecshospital.people;
 
-import ecshospital.people.Health;
-
-
 public abstract class Person
 {
 	private char gender;
@@ -26,17 +23,20 @@ public abstract class Person
 		System.out.println(this.health.getRecoveryTime());
 		System.out.println(this.health.getIllness().getIllnessName());
 	}
-	
+
 	public void printGenderAge()
 	{
 		System.out.print(this.gender + " , ");
 		System.out.print(this.age + " , ");
 	}
-	
+
 	public void printHealth()
 	{
 		System.out.print(this.getHealth().getHealthState() + " , ");
-		System.out.print(this.getHealth().getIllness().getIdNumber() + " , ");
+		if (this.getHealth().getHealthState() == 1)
+			System.out.print(this.getHealth().getIllness().getIdNumber() + " , ");
+		else
+			System.out.print(-1 + " , ");
 		System.out.print(this.getHealth().getRecoveryTime());
 	}
 

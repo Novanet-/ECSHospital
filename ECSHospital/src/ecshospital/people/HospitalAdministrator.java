@@ -7,27 +7,26 @@ import ecshospital.attributes.Illness;
 import ecshospital.containers.Bed;
 import ecshospital.containers.Hospital;
 import ecshospital.containers.Theatre;
-import ecshospital.people.Doctor;
-import ecshospital.people.Health;
-import ecshospital.people.LimbSurgeon;
-import ecshospital.people.OrganSurgeon;
-import ecshospital.people.Patient;
 import ecshospital.util.Parser;
-import ecshospital.util.TestHarness;
 
 public class HospitalAdministrator
 {
 	Hospital hospital = new Hospital();
 	private ArrayList<Doctor> doctors = new ArrayList<Doctor>();
 	private ArrayList<Patient> waitingPatients = new ArrayList<Patient>();
+	private ArrayList<Patient> assignedPatients = new ArrayList<Patient>();
+	private ArrayList<Integer> dischargedBeds = new ArrayList<Integer>();
 	private Parser parser = new Parser();
+	private String configPath = "/cfg/myHospital.txt";
 
 	/**
 	 * Reads the config file and parses the data within, using it to populate
 	 * the hospital with patients, doctors, beds and operating theatres.
 	 * 
+	 * @throws Exception
+	 * 
 	 */
-	public void initSimulation()
+	public void initSimulation() throws Exception
 	{
 		ArrayList<String> fileArray = parser.readConfigFile();
 		for (int i = 0; i < fileArray.size(); i++)
@@ -37,46 +36,76 @@ public class HospitalAdministrator
 			{
 				Illness tempIllness = null;
 				int healthState = 0;
+				int recoveryTime = -1;
 				if (line.get(3).equals("0"))
 				{
 					if (Integer.parseInt(line.get(4)) > -1)
 					{
 						healthState = 2;
-					} else
+						recoveryTime = Integer.parseInt(line.get(4));
+					}
+					else
 					{
 						healthState = 0;
 					}
-				} else
+				}
+				else
 				{
 					tempIllness = hospital.getIllnessArray().get((Integer.parseInt(line.get(3))) - 1);
 					healthState = 1;
 				}
-				Health tempHealth = new Health(healthState, -1, tempIllness);
+				Health tempHealth = new Health(healthState, recoveryTime, tempIllness);
 				Patient tempPatient = new Patient(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
 				waitingPatients.add(tempPatient);
-			} else if (line.get(0).equals("doctor"))
+			}
+			else if (line.get(0).equals("doctor"))
 			{
 				Health tempHealth = new Health(0, -1, null);
 				Doctor tempDoctor = new Doctor(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
-			} else if (line.get(0).equals("limbSurgeon"))
+			}
+			else if (line.get(0).equals("limbSurgeon"))
 			{
 				Health tempHealth = new Health(0, -1, null);
 				Doctor tempDoctor = new LimbSurgeon(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
-			} else if (line.get(0).equals("organSurgeon"))
+			}
+			else if (line.get(0).equals("organSurgeon"))
 			{
 				Health tempHealth = new Health(0, -1, null);
 				Doctor tempDoctor = new OrganSurgeon(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
-			} else if (line.get(0).equals("hospital"))
+			}
+			else if (line.get(0).equals("hospital"))
 			{
-				hospital.setMaxBeds(Integer.parseInt(line.get(1)) - 1);
-				hospital.setMaxTheatres(Integer.parseInt(line.get(2)) - 1);
+				hospital.setMaxBeds(Integer.parseInt(line.get(1)));
+				hospital.setMaxTheatres(Integer.parseInt(line.get(2)));
 				hospital.initBeds(hospital.getMaxBeds());
 				hospital.initTheatres(hospital.getMaxTheatres());
 			}
+			else
+				throw new Exception("Invalid config file");
 		}
+
+		System.out.println("Day 0");
+		System.out.println("Patients : ");
+		for (int i = 0; i < this.getHospital().size(); i++)
+		{
+			if (this.getHospital().getBeds().get(i).getPatient() != null)
+			{
+				this.getHospital().getBeds().get(i).getPatient().printGenderAge();
+				this.getHospital().getBeds().get(i).getPatient().printHealth();
+				System.out.println();
+			}
+		}
+		System.out.println("Doctors : ");
+		for (int i = 0; i < this.getDoctors().size(); i++)
+		{
+			this.getDoctors().get(i).printDetails();
+			System.out.println();
+		}
+		System.out.println();
+
 	}
 
 	/**
@@ -101,7 +130,7 @@ public class HospitalAdministrator
 			boolean patientFound = false;
 			int i = 0;
 
-			if (d.getSpecialism() == 4) //If LimbSurgeon
+			if (d.getSpecialism() == 4) //If OrganSurgeon
 			{
 				while ((i < hospital.size()) && (!patientFound)) //Iterates through occupied beds until patient is found
 				{
@@ -135,7 +164,7 @@ public class HospitalAdministrator
 
 			i = 0;
 
-			if (d.getSpecialism() == 3) //If OrganSurgeon
+			if (d.getSpecialism() == 3) //If LimbSurgeon
 			{
 				while ((i < hospital.size()) && (!patientFound)) //Iterates through occupied beds until patient is found
 				{
@@ -230,13 +259,25 @@ public class HospitalAdministrator
 	{
 		for (Patient p : waitingPatients)		//Admits all waiting patients
 		{
-			hospital.admitPatient(p);
+			int bedFound = -1;
+			if (p != null)
+				bedFound = hospital.admitPatient(p);
+			if (bedFound != -1)
+				assignedPatients.add(p);
+
 		}
+		for (Patient p : assignedPatients)	//Removes assigned patients from waiting patients list
+		{
+			if (waitingPatients.contains(p))
+				waitingPatients.remove(waitingPatients.indexOf(p));
+		}
+		assignedPatients.clear();
 		this.assignDoctors();		///Assigns patients to doctors
 		for (Doctor d : doctors)	//Doctors treat their patients
 		{
 			d.aDayPasses();
 		}
+		assignedPatients.clear();
 		int i = 0;
 		for (Theatre t : hospital.getTheatres())		//Remove patients from operating theatres
 		{
@@ -249,19 +290,28 @@ public class HospitalAdministrator
 		i = 0;
 		for (Bed b : hospital.getBeds())		//Discharge any healthy patients and lets patients recover
 		{
+			if (!(i < hospital.size()))
+			{
+				break;
+			}
 			if (b.isOccupied())
 			{
 				b.getPatient().aDayPasses();
 				if (b.getPatient().getHealth().getHealthState() == 0)
 				{
-					hospital.dischargePatient(i);
+					dischargedBeds.add(i);
 				}
 			}
 			i++;
 		}
+		for (Integer iB : dischargedBeds)
+		{
+			hospital.dischargePatient(iB);
+		}
+		dischargedBeds.clear();
 		return true;
 	}
-	
+
 	public void printDayResults(HospitalAdministrator admin)
 	{
 		System.out.println("Patients : ");
@@ -270,7 +320,7 @@ public class HospitalAdministrator
 			if (admin.getHospital().getBeds().get(i).getPatient() != null)
 			{
 				admin.getHospital().getBeds().get(i).getPatient().printGenderAge();
-				admin.getHospital().getBeds().get(i).getPatient().printHealth();;
+				admin.getHospital().getBeds().get(i).getPatient().printHealth();
 				System.out.println();
 			}
 		}
@@ -282,25 +332,49 @@ public class HospitalAdministrator
 		}
 		System.out.println();
 	}
-	
+
 	public void startSimulation()
 	{
 		HospitalAdministrator admin = new HospitalAdministrator();
-		admin.initSimulation();
-		System.out.println("Max Beds = " + hospital.getMaxBeds());
-		System.out.println("Max Theatres = " + hospital.getMaxTheatres());
-		System.out.println("");
-		for(int i = 0; i < 7; i++)
+		try
 		{
-			System.out.println("Day " + (i+1));
+			admin.initSimulation();
+		}
+		catch (Exception e)
+		{
+			e.getMessage();
+			e.printStackTrace();
+			return;
+		}
+		System.out.println("Max Beds = " + admin.hospital.getMaxBeds());
+		System.out.println("Max Theatres = " + admin.hospital.getMaxTheatres());
+		System.out.println("");
+		for (int i = 0; i < 7; i++)
+		{
+			System.out.println("Day " + (i + 1));
 			admin.aDayPasses();
 			admin.printDayResults(admin);
+			try
+			{
+				Thread.sleep(1000);
+			}
+			catch (InterruptedException e)
+			{
+				System.out.println("Sleep interrupted");
+				e.printStackTrace();
+			}
+
 		}
 	}
-	
+
 	public static void main(String args[])
 	{
 		HospitalAdministrator admin = new HospitalAdministrator();
+		if (!(args == null))
+		{
+			for (String s : args)
+				admin.configPath = s;
+		}
 		admin.startSimulation();
 	}
 
