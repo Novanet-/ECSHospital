@@ -18,7 +18,6 @@ import ecshospital.util.TestHarness;
 public class HospitalAdministrator
 {
 	Hospital hospital = new Hospital();
-	HospitalAdministrator admin;
 	private ArrayList<Doctor> doctors = new ArrayList<Doctor>();
 	private ArrayList<Patient> waitingPatients = new ArrayList<Patient>();
 	private Parser parser = new Parser();
