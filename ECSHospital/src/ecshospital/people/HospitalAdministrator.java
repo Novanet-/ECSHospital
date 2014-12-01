@@ -43,13 +43,11 @@ public class HospitalAdministrator
 					{
 						healthState = 2;
 						recoveryTime = Integer.parseInt(line.get(4));
-					}
-					else
+					} else
 					{
 						healthState = 0;
 					}
-				}
-				else
+				} else
 				{
 					tempIllness = hospital.getIllnessArray().get((Integer.parseInt(line.get(3))) - 1);
 					healthState = 1;
@@ -57,33 +55,41 @@ public class HospitalAdministrator
 				Health tempHealth = new Health(healthState, recoveryTime, tempIllness);
 				Patient tempPatient = new Patient(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
 				waitingPatients.add(tempPatient);
-			}
-			else if (line.get(0).equals("doctor"))
+			} else if (line.get(0).equals("doctor"))
 			{
 				Health tempHealth = new Health(0, -1, null);
 				Doctor tempDoctor = new Doctor(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
-			}
-			else if (line.get(0).equals("limbSurgeon"))
+			} else if (line.get(0).equals("limbSurgeon"))
 			{
 				Health tempHealth = new Health(0, -1, null);
 				Doctor tempDoctor = new LimbSurgeon(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
-			}
-			else if (line.get(0).equals("organSurgeon"))
+			} else if (line.get(0).equals("organSurgeon"))
 			{
 				Health tempHealth = new Health(0, -1, null);
 				Doctor tempDoctor = new OrganSurgeon(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
-			}
-			else if (line.get(0).equals("hospital"))
+			} else if (line.get(0).equals("hospital"))
 			{
 				hospital.setMaxBeds(Integer.parseInt(line.get(1)));
 				hospital.setMaxTheatres(Integer.parseInt(line.get(2)));
 				hospital.initBeds(hospital.getMaxBeds());
 				hospital.initTheatres(hospital.getMaxTheatres());
-			}
-			else
+			} else if (line.get(0).equals("illness"))
+			{
+				Illness tempIllness = new Illness(null, 0, 0, 0, null, false);
+				tempIllness.setIllnessName(line.get(1));
+				tempIllness.setIdNumber(Integer.parseInt(line.get(2)));
+				tempIllness.setMinRecoveryTime(Integer.parseInt(line.get(3)));
+				tempIllness.setMinRecoveryTime(Integer.parseInt(line.get(4)));
+				tempIllness.setCanBeTreatedBy(line.get(5));
+				tempIllness.setRequiresTheatres(Boolean.parseBoolean(line.get(6)));
+				hospital.setMaxBeds(Integer.parseInt(line.get(1)));
+				hospital.setMaxTheatres(Integer.parseInt(line.get(2)));
+				hospital.initBeds(hospital.getMaxBeds());
+				hospital.initTheatres(hospital.getMaxTheatres());
+			} else
 				throw new Exception("Invalid config file");
 		}
 
@@ -119,9 +125,11 @@ public class HospitalAdministrator
 	 * that is successful then assign the patient to the doctor, if non-surgical
 	 * treatment then just assign the patient to the doctor
 	 * 
+	 * @throws Exception
+	 * 
 	 */
 
-	public void assignDoctors()
+	public void assignDoctors() 
 	{
 		HashSet<Patient> assignedPatients = new HashSet<Patient>(); //HashSet containing assigned patients
 		for (Doctor d : doctors) //Iterate through doctors
@@ -141,18 +149,15 @@ public class HospitalAdministrator
 						if ((illnessID == 5 || illnessID == 6) && (!assignedPatients.contains(tempPatient))) //If a LimbSurgeon illness and patient not already been assigned
 						{
 							patientFound = true;
-							boolean theatreFound = false;
-							i = 0;
-							while ((!theatreFound) && (i < hospital.getMaxTheatres())) //Iterates through the operating theatres until a free one found
+							try
 							{
-								if (hospital.isTheatreFree(i))
-								{
-									theatreFound = true;
-									d.assignPatient(tempPatient); 	//Assigns patient to doctor
-									assignedPatients.add(tempPatient); 	//Marks patient as being already assigned
-									hospital.prepForTheatre(i, tempPatient);	 //Assigns patient to operating theatre
-								}
-								i++;
+								findFreeTheatre(tempPatient, d);
+							} 
+							catch (Exception e)
+							{
+								e.getMessage();
+								e.printStackTrace();
+								d.setSpecialism(1);
 							}
 						}
 					}
@@ -175,18 +180,15 @@ public class HospitalAdministrator
 						if ((illnessID == 7 || illnessID == 8) && (!assignedPatients.contains(tempPatient))) //If an OrganSurgeon illness and patient not already been assigned
 						{
 							patientFound = true;
-							boolean theatreFound = false;
-							i = 0;
-							while ((!theatreFound) && (i < hospital.getMaxTheatres())) //Iterates through the operating theatres until a free one found
+							try
 							{
-								if (hospital.isTheatreFree(i))
-								{
-									theatreFound = true;
-									d.assignPatient(tempPatient); 	//Assigns patient to doctor
-									assignedPatients.add(tempPatient);	//Marks patient as being already assigned
-									hospital.prepForTheatre(i, tempPatient);	//Assigns patient to operating theatre
-								}
-								i++;
+								findFreeTheatre(tempPatient, d);
+							} 
+							catch (Exception e)
+							{
+								e.getMessage();
+								e.printStackTrace();
+								d.setSpecialism(1);
 							}
 						}
 					}
@@ -209,18 +211,15 @@ public class HospitalAdministrator
 						if ((illnessID == 4) && (!assignedPatients.contains(tempPatient))) //If a basic Surgeon illness and patient not already been assigned
 						{
 							patientFound = true;
-							boolean theatreFound = false;
-							i = 0;
-							while ((!theatreFound) && (i < hospital.getMaxTheatres())) //Iterates through the operating theatres until a free one found
+							try
 							{
-								if (hospital.isTheatreFree(i))
-								{
-									theatreFound = true;
-									d.assignPatient(tempPatient); 	//Assigns patient to doctor
-									assignedPatients.add(tempPatient);	//Marks patient as being already assigned
-									hospital.prepForTheatre(i, tempPatient);	//Assigns patient to operating theatre
-								}
-								i++;
+								findFreeTheatre(tempPatient, d);
+							} 
+							catch (Exception e)
+							{
+								e.getMessage();
+								e.printStackTrace();
+								d.setSpecialism(1);
 							}
 						}
 					}
@@ -243,8 +242,8 @@ public class HospitalAdministrator
 						if ((illnessID < 4) && (!assignedPatients.contains(tempPatient))) //If a basic Doctor illness and patient not already been assigned
 						{
 							patientFound = true;
-							d.assignPatient(tempPatient); 	//Assigns patient to doctor
-							assignedPatients.add(tempPatient);	//Marks patient as being already assigned
+							d.assignPatient(tempPatient); //Assigns patient to doctor
+							assignedPatients.add(tempPatient); //Marks patient as being already assigned
 						}
 					}
 					i++;
@@ -255,31 +254,61 @@ public class HospitalAdministrator
 		}
 	}
 
+	public boolean findFreeTheatre(Patient tempPatient, Doctor d) throws Exception
+	{
+		int i = 0;
+		boolean theatreFound = false;
+		while ((!theatreFound) && (i < hospital.getMaxTheatres())) //Iterates through the operating theatres until a free one found
+		{
+			if (hospital.isTheatreFree(i))
+			{
+				theatreFound = true;
+				d.assignPatient(tempPatient); 	//Assigns patient to doctor
+				assignedPatients.add(tempPatient);	//Marks patient as being already assigned
+				hospital.prepForTheatre(i, tempPatient);	//Assigns patient to operating theatre
+			}
+			i++;
+		}
+		if (theatreFound)
+			return theatreFound;
+		else
+			throw new Exception("No free theatre");
+				
+		
+	}
+
 	public boolean aDayPasses()
 	{
-		for (Patient p : waitingPatients)		//Admits all waiting patients
+		for (Patient p : waitingPatients) //Admits all waiting patients
 		{
 			int bedFound = -1;
 			if (p != null)
-				bedFound = hospital.admitPatient(p);
+				try
+				{
+					bedFound = hospital.admitPatient(p);
+				} catch (Exception e)
+				{
+					e.getMessage();
+					e.printStackTrace();
+				}
 			if (bedFound != -1)
 				assignedPatients.add(p);
 
 		}
-		for (Patient p : assignedPatients)	//Removes assigned patients from waiting patients list
+		for (Patient p : assignedPatients) //Removes assigned patients from waiting patients list
 		{
 			if (waitingPatients.contains(p))
 				waitingPatients.remove(waitingPatients.indexOf(p));
 		}
 		assignedPatients.clear();
-		this.assignDoctors();		///Assigns patients to doctors
-		for (Doctor d : doctors)	//Doctors treat their patients
+		this.assignDoctors(); ///Assigns patients to doctors
+		for (Doctor d : doctors) //Doctors treat their patients
 		{
 			d.aDayPasses();
 		}
 		assignedPatients.clear();
 		int i = 0;
-		for (Theatre t : hospital.getTheatres())		//Remove patients from operating theatres
+		for (Theatre t : hospital.getTheatres()) //Remove patients from operating theatres
 		{
 			if (t.isOccupied())
 			{
@@ -288,7 +317,7 @@ public class HospitalAdministrator
 			}
 		}
 		i = 0;
-		for (Bed b : hospital.getBeds())		//Discharge any healthy patients and lets patients recover
+		for (Bed b : hospital.getBeds()) //Discharge any healthy patients and lets patients recover
 		{
 			if (!(i < hospital.size()))
 			{
@@ -339,8 +368,7 @@ public class HospitalAdministrator
 		try
 		{
 			admin.initSimulation();
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.getMessage();
 			e.printStackTrace();
@@ -357,8 +385,7 @@ public class HospitalAdministrator
 			try
 			{
 				Thread.sleep(1000);
-			}
-			catch (InterruptedException e)
+			} catch (InterruptedException e)
 			{
 				System.out.println("Sleep interrupted");
 				e.printStackTrace();

@@ -34,8 +34,9 @@ public class Hospital
 	 * 
 	 * @return The index of the bed the patient has been placed in, if no bed
 	 *         found then return -1
+	 * @throws Exception 
 	 */
-	public int admitPatient(Patient patient)
+	public int admitPatient(Patient patient) throws Exception
 	{
 		Bed tempBed = new Bed();
 		boolean bedFound = false;
@@ -54,7 +55,7 @@ public class Hospital
 		if (bedFound)
 			return index;
 		else
-			return -1;
+			throw new Exception("No beds remaining");
 	}
 
 	/**
