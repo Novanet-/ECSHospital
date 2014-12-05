@@ -1,4 +1,12 @@
 hospital:25,5
+illness:Djkstra’s syndrome,1,5,5,Any Doctor,false
+illness:Java Flu,2,3,3,Any Doctor,false
+illness:Deadline Panic Attacks,3,1,1,Any Doctor,false
+illness:Polymorphic Cist,4,2,4,Any Doctor,true
+illness:Semicolon Missing,5,5,8,Organ Surgeon,true
+illness:Trapped Exception,6,6,8,Organ Surgeon,true
+illness:Tim Berners Knee,7,4,6,Limb Surgeon, true
+illness:Coder’s Elbow,8,2,3,Limb Surgeon, true
 patient:M,60,1,-1
 patient:M,22,3,-1
 patient:F,31,4,-1
