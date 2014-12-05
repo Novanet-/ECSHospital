@@ -82,14 +82,14 @@ public class HospitalAdministrator
 				Doctor tempDoctor = new OrganSurgeon(line.get(1).charAt(0), Integer.parseInt(line.get(2)), tempHealth);
 				doctors.add(tempDoctor);
 			}
-			else if (line.get(0).equals("hospital"))
+			else if (line.get(0).equals("hospital"))	//If line defines a hospital then create beds and theatres with the information supplied
 			{
 				hospital.setMaxBeds(Integer.parseInt(line.get(1)));
 				hospital.setMaxTheatres(Integer.parseInt(line.get(2)));
 				hospital.initBeds(hospital.getMaxBeds());
 				hospital.initTheatres(hospital.getMaxTheatres());
 			}
-			else if (line.get(0).equals("illness"))
+			else if (line.get(0).equals("illness"))	//If line defines a illness then create a illness with the information supplied
 			{
 				Illness tempIllness = new Illness(null, 0, 0, 0, null, false);
 				tempIllness.setIllnessName(line.get(1));
@@ -104,7 +104,7 @@ public class HospitalAdministrator
 				throw new Exception("Invalid config file");
 		}
 
-		System.out.println("Day 0");
+		System.out.println("Day 0");							//Displays the state of the doctors and patients before a day has passed
 		System.out.println("Patients : ");
 		for (int i = 0; i < this.getHospital().size(); i++)
 		{
@@ -168,13 +168,14 @@ public class HospitalAdministrator
 							{
 								System.out.println(e.getMessage());
 								e.printStackTrace();
-								d.setSpecialism(1);
+								patientFound = false;
+								d.setSpecialism(1);		//If no free theatres, temporarily make the doctor only try to treat non-surgical illness
 							}
 						}
 					}
 					i++;
 				}
-				if ((!patientFound) && (!(i < hospital.size())))
+				if ((!patientFound) && (!(i < hospital.size())))	//If patient not found, but unchecked patients left, temporarily reduce specialism of doctor to help find a match
 					d.setSpecialism(2);
 			}
 
@@ -199,13 +200,14 @@ public class HospitalAdministrator
 							{
 								System.out.println(e.getMessage());
 								e.printStackTrace();
-								d.setSpecialism(1);
+								patientFound = false;
+								d.setSpecialism(1);	//If no free theatres, temporarily make the doctor only try to treat non-surgical illness
 							}
 						}
 					}
 					i++;
 				}
-				if ((!patientFound) && (!(i < hospital.size())))
+				if ((!patientFound) && (!(i < hospital.size())))	//If patient not found, but unchecked patients left, temporarily reduce specialism of doctor to help find a match
 					d.setSpecialism(2);
 			}
 
@@ -230,13 +232,14 @@ public class HospitalAdministrator
 							{
 								System.out.println(e.getMessage());
 								e.printStackTrace();
-								d.setSpecialism(1);
+								patientFound = false;
+								d.setSpecialism(1);	//If no free theatres, temporarily make the doctor only try to treat non-surgical illness
 							}
 						}
 					}
 					i++;
 				}
-				if ((!patientFound) && (!(i < hospital.size())))
+				if ((!patientFound) && (!(i < hospital.size())))	//If patient not found, but unchecked patients left, temporarily reduce specialism of doctor to help find a match
 					d.setSpecialism(1);
 			}
 
@@ -261,10 +264,17 @@ public class HospitalAdministrator
 				}
 			}
 
-			d.setSpecialism(tempSpec);
+			d.setSpecialism(tempSpec);	//Reverts doctor back to their original specialism
 		}
 	}
 
+	/**
+	 * Attempts to find a free operating theatre so that the specified doctor
+	 * can operate on the specified patient
+	 * 
+	 * @throws Exception
+	 * 
+	 */
 	public boolean findFreeTheatre(Patient tempPatient, Doctor d) throws Exception
 	{
 		int i = 0;
@@ -287,22 +297,31 @@ public class HospitalAdministrator
 
 	}
 
+	/**
+	 * The main body of the simulation, causes all the elements such as doctors
+	 * and patients to perform their daily tasks, such as treating patients or
+	 * being discharged.
+	 * 
+	 * 
+	 * @return Whether the method completed succesfully
+	 * 
+	 */
 	public boolean aDayPasses()
 	{
 		for (Patient p : waitingPatients) //Admits all waiting patients
 		{
 			int bedFound = -1;
-			if (p != null)
+			if (p != null)	//If patient is valid
 				try
 				{
-					bedFound = hospital.admitPatient(p);
+					bedFound = hospital.admitPatient(p);	//Try and admit patient to a bed
 				}
 				catch (Exception e)
 				{
 					System.out.println(e.getMessage());
 					e.printStackTrace();
 				}
-			if (bedFound != -1)
+			if (bedFound != -1)	//If bed was found, add the patient to an admitted patients list
 				assignedPatients.add(p);
 
 		}
@@ -330,31 +349,39 @@ public class HospitalAdministrator
 		i = 0;
 		for (Bed b : hospital.getBeds()) //Discharge any healthy patients and lets patients recover
 		{
-			if (!(i < hospital.size()))
+			if (!(i < hospital.size()))	//Stop iterating when the number off occuipied beds has been reached
 			{
 				break;
 			}
 			if (b.isOccupied())
 			{
 				b.getPatient().aDayPasses();
-				if (b.getPatient().getHealth().getHealthState() == 0)
+				if (b.getPatient().getHealth().getHealthState() == 0)	//iF patient is healthy
 				{
-					dischargedBeds.add(i);
+					dischargedBeds.add(i);	//Add them to a "waiting to be discharged" list
 				}
 			}
 			i++;
 		}
 		for (Integer iB : dischargedBeds)
 		{
-			hospital.dischargePatient(iB);
+			hospital.dischargePatient(iB);	//Discharges all patients that are waiting to be discharged
 		}
 		dischargedBeds.clear();
 		return true;
 	}
 
+	/**
+	 * Prints out the status of the hospital at the current day.
+	 * 
+	 * @param admin
+	 *            The HospitalAdminsitrator obejct managing the simulation
+	 * 
+	 * 
+	 */
 	public void printDayResults(HospitalAdministrator admin)
 	{
-		System.out.println("Patients : ");
+		System.out.println("Patients : ");						//Prints out the details of the current patients in the hospital
 		for (int i = 0; i < admin.getHospital().size(); i++)
 		{
 			if (admin.getHospital().getBeds().get(i).getPatient() != null)
@@ -364,7 +391,7 @@ public class HospitalAdministrator
 				System.out.println();
 			}
 		}
-		System.out.println("Doctors : ");
+		System.out.println("Doctors : ");						//Prints out the details of the current doctors in the hospital
 		for (int i = 0; i < admin.getDoctors().size(); i++)
 		{
 			admin.getDoctors().get(i).printDetails();
@@ -373,12 +400,17 @@ public class HospitalAdministrator
 		System.out.println();
 	}
 
+	/**
+	 * Starts the simulation, initialises the hospital and then runs the
+	 * simulation for 7 days
+	 * 
+	 */
 	public void startSimulation()
 	{
 		HospitalAdministrator admin = new HospitalAdministrator();
 		try
 		{
-			admin.initSimulation();
+			admin.initSimulation();		//Initialises the simulation by populating it with various objects
 		}
 		catch (Exception e)
 		{
@@ -407,15 +439,23 @@ public class HospitalAdministrator
 		}
 	}
 
+	/**
+	 * Accepts any arguments the program has been started with, then starts the
+	 * simulation.
+	 * 
+	 * @param args
+	 *            Contains any arguments added to the program's launch command
+	 * 
+	 */
 	public static void main(String args[])
 	{
 		HospitalAdministrator admin = new HospitalAdministrator();
-		if (!(args == null))
+		if (!(args == null))			//If there was an argument when program was run
 		{
 			for (String s : args)
-				admin.parser.setConfigPath(s);
+				admin.parser.setConfigPath(s);	//Set the config file path as the argument
 		}
-		admin.startSimulation();
+		admin.startSimulation();	//Start the simulation
 	}
 
 	/**
