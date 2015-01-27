@@ -213,7 +213,7 @@ public class Hospital
 
 	private void initIllnessArray()
 	{
-		/*illnessArray.add(new Illness("Djkstra’s syndrome", 1, 5, 5, "Any Doctor", false));
+		illnessArray.add(new Illness("Djkstra’s syndrome", 1, 5, 5, "Any Doctor", false));
 		illnessArray.add(new Illness("Java Flu ", 2, 3, 3, "Any Doctor", false));
 		illnessArray.add(new Illness("Deadline Panic Attacks", 3, 1, 1, "Any Doctor", false));
 		illnessArray.add(new Illness("Polymorphic Cist ", 4, 2, 4, "Any Doctor", true));

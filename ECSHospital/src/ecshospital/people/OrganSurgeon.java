@@ -11,14 +11,6 @@ public class OrganSurgeon extends Surgeon
 
 	public boolean operate(Patient assignedPatient, boolean patientTreated)
 	{
-		int illnessID = assignedPatient.getHealth().getIllness().getIdNumber();
-		if (illnessID > -1)
-		{
-			assignedPatient.getHealth().setHealthState(2); //Sets patient's health state to recovering
-			assignedPatient.getHealth().setRecoveryTime(assignedPatient.getHealth().generateRecoveryTime());	//Assigns a recovery time based on the min and max recovery time of their illness
-			this.assignedPatient = null;
-			patientTreated = true;
-		}
-		return patientTreated;
+		return super.operate(assignedPatient, patientTreated);
 	}
 }

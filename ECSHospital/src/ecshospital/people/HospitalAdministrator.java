@@ -29,11 +29,24 @@ public class HospitalAdministrator
 	public void initSimulation() throws Exception
 	{
 		ArrayList<String> fileArray = parser.readConfigFile();	//Reads the hospital's config file into an ArrayList
+		boolean illnessesFound = false;
 		for (int i = 0; i < fileArray.size(); i++)	//For each line of the file
 		{
 			ArrayList<String> line = parser.parseConfigFile(fileArray.get(i));	//Parses each element of the line into separate array elements
 			if (line.get(0).equals("patient"))	//If line defines a patient then create a patient with the information supplied
 			{
+				if (!illnessesFound)
+				{
+					hospital.getIllnessArray().add(new Illness("Djkstra’s syndrome", 1, 5, 5, "Any Doctor", false));
+					hospital.getIllnessArray().add(new Illness("Java Flu ", 2, 3, 3, "Any Doctor", false));
+					hospital.getIllnessArray().add(new Illness("Deadline Panic Attacks", 3, 1, 1, "Any Doctor", false));
+					hospital.getIllnessArray().add(new Illness("Polymorphic Cist ", 4, 2, 4, "Any Doctor", true));
+					hospital.getIllnessArray().add(new Illness("Semicolon Missing ", 5, 5, 8, "Organ Surgeon", true));
+					hospital.getIllnessArray().add(new Illness("Trapped Exception ", 6, 6, 8, "Organ Surgeon", true));
+					hospital.getIllnessArray().add(new Illness("Tim Berners Knee ", 7, 4, 6, "Limb Surgeon", true));
+					hospital.getIllnessArray().add(new Illness("Coder’s Elbow ", 8, 2, 3, "Limb Surgeon", true));
+					illnessesFound = true;
+				}
 				Illness tempIllness = null;
 				int healthState = 0;
 				int recoveryTime = -1;
